@@ -1,0 +1,59 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential libasound2-dev patchelf
+
+      - name: Install Python dependencies
+        run: |
+          python -m venv .venv
+          .venv/bin/pip install --upgrade pip
+          .venv/bin/pip install -e '.[dev,build]'
+
+      - name: Validate release version
+        run: make verify-release-version TAG="${GITHUB_REF_NAME}"
+
+      - name: Test and build native ALSA module
+        run: make check
+
+      - name: Build onefile release with Nuitka
+        run: make build-onefile
+
+      - name: Package release tarball
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          mkdir -p release
+          cp dist/alsachainqt.bin release/alsachainqt
+          cp build/libasound_module_pcm_alsachain_status.so release/
+          cp icon.png release/
+          cp alsachainqt.desktop release/mikelexp.alsachainqt.desktop
+          cp scripts/install.sh release/
+          chmod +x release/alsachainqt release/install.sh
+          tar czf "alsachainqt-${VERSION}-linux-x86_64.tar.gz" -C release \
+            alsachainqt libasound_module_pcm_alsachain_status.so icon.png \
+            mikelexp.alsachainqt.desktop install.sh
+
+      - name: Create GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: alsachainqt-*-linux-x86_64.tar.gz
+          prerelease: ${{ contains(github.ref_name, '-') }}

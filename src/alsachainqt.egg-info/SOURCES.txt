@@ -1,9 +1,11 @@
 README.md
 pyproject.toml
 src/alsachainqt/__init__.py
+src/alsachainqt/__main__.py
 src/alsachainqt/alsa.py
 src/alsachainqt/asound.py
 src/alsachainqt/deps.py
+src/alsachainqt/equalizer.py
 src/alsachainqt/main.py
 src/alsachainqt/models.py
 src/alsachainqt/paths.py
@@ -18,3 +20,8 @@ src/alsachainqt.egg-info/dependency_links.txt
 src/alsachainqt.egg-info/entry_points.txt
 src/alsachainqt.egg-info/requires.txt
 src/alsachainqt.egg-info/top_level.txt
+tests/test_asound.py
+tests/test_equalizer.py
+tests/test_store.py
+tests/test_theme.py
+tests/test_ui.py

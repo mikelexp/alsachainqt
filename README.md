@@ -15,6 +15,14 @@ python -m venv .venv
 make check
 ```
 
+## Builds and releases
+
+`make build-standalone` and `make build-onefile` compile a Nuitka build after
+building the native ALSA module. The equivalent `just` commands are available.
+`make install` installs a compiled app under `~/.local`; it intentionally does
+not alter ALSA system paths or profile data. See [RELEASE.md](RELEASE.md) for
+the GitHub Release and AUR publication flow.
+
 The app owns only `~/.config/alsachain/`, `$XDG_STATE_HOME/alsachain/`, and the
 `ALSACHAIN` marked block in `~/.asoundrc`.
 

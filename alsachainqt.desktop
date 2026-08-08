@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=ALSAChainQT
+Comment=Manage ALSAChain virtual PCM profiles
+Exec=alsachainqt
+Icon=mikelexp.alsachainqt
+Categories=AudioVideo;Audio;Settings;Utility;
+Terminal=false
+StartupNotify=true
